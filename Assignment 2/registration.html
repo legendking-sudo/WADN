@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>User Registration</title>
+<style>
+  /* Reset & Basic */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .container {
+    background: white;
+    border-radius: 12px;
+    padding: 24px 32px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  h1 {
+    text-align: center;
+    color: #4b0082;
+    margin-bottom: 24px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    border-color: #764ba2;
+  }
+  button {
+    background-color: #764ba2;
+    color: white;
+    font-weight: 700;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+  }
+  button:hover {
+    background-color: #5a3676;
+  }
+  .message {
+    margin-top: 15px;
+    color: #4caf50;
+    font-weight: 600;
+    text-align: center;
+  }
+  .error {
+    color: #e63946;
+  }
+  .link-list {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 600;
+    color: #764ba2;
+    text-decoration: none;
+  }
+  .link-list:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 400px) {
+    .container {
+      padding: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>User Registration</h1>
+  <form id="registrationForm" autocomplete="off">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Your full name" required />
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="you@example.com" required />
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Choose a password" required minlength="6" />
+    <button type="submit">Register</button>
+    <div class="message" id="message"></div>
+  </form>
+  <a href="list.html" class="link-list" target="_blank" rel="noopener">View Registered Users</a>
+</div>
+
+<script>
+  // Simulated AJAX POST function that returns a Promise
+  function ajaxPost(url, data) {
+    return new Promise((resolve, reject) => {
+      // Simulate network delay
+      setTimeout(() => {
+        // Always successful for this demo
+        resolve({ status: 'success', data: data });
+      }, 700);
+    });
+  }
+
+  const form = document.getElementById('registrationForm');
+  const messageEl = document.getElementById('message');
+
+  function getStoredUsers() {
+    const stored = localStorage.getItem('registeredUsers');
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  }
+
+  function storeUser(user) {
+    const users = getStoredUsers();
+    users.push(user);
+    localStorage.setItem('registeredUsers', JSON.stringify(users));
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    messageEl.textContent = '';
+    messageEl.classList.remove('error');
+
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const password = form.password.value;
+
+    // Basic validation
+    if (!name || !email || !password) {
+      messageEl.textContent = 'Please fill in all required fields.';
+      messageEl.classList.add('error');
+      return;
+    }
+    // Very simple email regex check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      messageEl.textContent = 'Please enter a valid email address.';
+      messageEl.classList.add('error');
+      return;
+    }
+    if (password.length < 6) {
+      messageEl.textContent = 'Password must be at least 6 characters.';
+      messageEl.classList.add('error');
+      return;
+    }
+
+    const userData = { name, email, password: password }; // In real app, password must be hashed!
+
+    // Simulate AJAX POST method
+    ajaxPost('/register', userData)
+      .then((res) => {
+        if (res.status === 'success') {
+          storeUser(userData);
+          messageEl.textContent = 'Registration successful!';
+          form.reset();
+        } else {
+          messageEl.textContent = 'Registration failed. Please try again.';
+          messageEl.classList.add('error');
+        }
+      })
+      .catch(() => {
+        messageEl.textContent = 'Network error. Please try again.';
+        messageEl.classList.add('error');
+      });
+  });
+</script>
+</body>
+</html>
+

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Registered Users</title>
+<style>
+  body {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+    color: #fff;
+  }
+  .container {
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 32px;
+    color: #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  h1 {
+    text-align: center;
+    color: #4b0082;
+    margin-bottom: 24px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid #764ba2;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  th {
+    background-color: #764ba2;
+    color: white;
+  }
+  tbody tr:nth-child(even) {
+    background-color: #f1f1f1;
+  }
+  #no-data {
+    text-align: center;
+    font-weight: 600;
+    color: #764ba2;
+  }
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: 600;
+    color: #764ba2;
+    text-decoration: none;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      padding: 16px 20px;
+    }
+    th, td {
+      padding: 8px 10px;
+      font-size: 0.9rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Registered Users</h1>
+  <table id="usersTable" aria-label="List of registered users">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody id="usersBody">
+    </tbody>
+  </table>
+  <div id="no-data" style="display:none;">No users registered yet.</div>
+  <a href="registration.html" class="back-link">Back to Registration</a>
+</div>
+
+<script>
+  function getStoredUsers() {
+    const stored = localStorage.getItem('registeredUsers');
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  }
+
+  function renderUsers() {
+    const users = getStoredUsers();
+    const tbody = document.getElementById('usersBody');
+    const noData = document.getElementById('no-data');
+
+    tbody.innerHTML = '';
+    if (users.length === 0) {
+      noData.style.display = 'block';
+      return;
+    }
+    noData.style.display = 'none';
+
+    users.forEach((user, idx) => {
+      const tr = document.createElement('tr');
+      
+      const tdIndex = document.createElement('td');
+      tdIndex.textContent = idx + 1;
+      tr.appendChild(tdIndex);
+
+      const tdName = document.createElement('td');
+      tdName.textContent = user.name;
+      tr.appendChild(tdName);
+
+      const tdEmail = document.createElement('td');
+      tdEmail.textContent = user.email;
+      tr.appendChild(tdEmail);
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderUsers();
+  });
+</script>
+</body>
+</html>
+

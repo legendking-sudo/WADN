@@ -1,0 +1,21 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+  }
+  
+  .ui-content {
+    padding: 15px;
+  }
+  
+  .ui-header, .ui-footer {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .ui-btn {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 10px;
+  }
+  

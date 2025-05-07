@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Admin Dashboard</title>
+  <!-- Bootstrap 5 CSS CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeo7F7CUh9m5GFnH1z6aC5W/OjkB0z0IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"
+  />
+  <style>
+    /* Sidebar */
+    body {
+      overflow-x: hidden;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8f9fa;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #sidebar {
+      min-height: 100vh;
+      width: 240px;
+      background-color: #343a40;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 1rem;
+      transition: all 0.3s;
+      z-index: 1030;
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    #sidebar .nav-link {
+      color: #adb5bd;
+      font-weight: 500;
+      padding: 0.75rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      transition: color 0.2s ease-in-out;
+      border-left: 5px solid transparent;
+      font-size: 0.95rem;
+    }
+    #sidebar .nav-link.active,
+    #sidebar .nav-link:hover {
+      color: #fff;
+      background-color: #495057;
+      border-left-color: #0d6efd;
+    }
+
+    #sidebar .nav-link i {
+      font-size: 1.2rem;
+      min-width: 20px;
+    }
+
+    /* Main content */
+    #content {
+      margin-left: 240px;
+      padding: 1rem 1rem 1rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    #content header {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #343a40;
+    }
+
+    /* Statistic cards */
+    .card {
+      border-radius: 0.5rem;
+      box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 0.075);
+      transition: box-shadow 0.2s ease;
+      cursor: default;
+    }
+
+    .card:hover {
+      box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 0.12);
+    }
+
+    .card .card-body {
+      padding: 1rem 1.25rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0d6efd;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-top: 0.2rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 991.98px) {
+      #sidebar {
+        width: 220px;
+      }
+      #content {
+        margin-left: 220px;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      #sidebar {
+        position: fixed;
+        width: 180px;
+        height: 100%;
+        z-index: 1040;
+        transform: translateX(-190px);
+        transition: all 0.3s ease-in-out;
+      }
+
+      #sidebar.show {
+        transform: translateX(0);
+      }
+
+      #content {
+        margin-left: 0;
+        padding: 0.8rem 0.8rem 1rem 0.8rem;
+        min-height: 100vh;
+      }
+
+      #sidebar .nav-link {
+        padding: 0.65rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      #sidebar .nav-link i {
+        font-size: 1.1rem;
+        min-width: 18px;
+      }
+
+      /* Add a toggle button above header */
+      #sidebarToggle {
+        display: inline-block;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        color: #0d6efd;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+
+      /* Cards full width on xs devices */
+      .card-col {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+    }
+
+    /* Scrollbar for sidebar */
+    #sidebar::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    #sidebar::-webkit-scrollbar-track {
+      background: #343a40;
+    }
+
+    #sidebar::-webkit-scrollbar-thumb {
+      background-color: #6c757d;
+      border-radius: 10px;
+    }
+  </style>
+  <!-- Bootstrap Icons CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+  />
+</head>
+<body>
+  <nav id="sidebar" aria-label="Sidebar navigation">
+    <div class="text-center mb-4 fs-4 fw-bold border-bottom border-secondary pb-3">
+      Admin Dashboard
+    </div>
+    <ul class="nav flex-column" role="menu">
+      <li class="nav-item" role="none">
+        <a href="#" class="nav-link active" aria-current="page" role="menuitem">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item" role="none">
+        <a href="#" class="nav-link" role="menuitem">
+          <i class="bi bi-cart-check"></i> Orders / Exams
+        </a>
+      </li>
+      <li class="nav-item" role="none">
+        <a href="#" class="nav-link" role="menuitem">
+          <i class="bi bi-box-seam"></i> Products / Courses
+        </a>
+      </li>
+      <li class="nav-item" role="none">
+        <a href="#" class="nav-link" role="menuitem">
+          <i class="bi bi-people"></i> Students / Users
+        </a>
+      </li>
+      <li class="nav-item" role="none">
+        <a href="#" class="nav-link" role="menuitem">
+          <i class="bi bi-bar-chart-line"></i> Reports
+        </a>
+      </li>
+      <li class="nav-item mt-auto" role="none">
+        <a href="#" class="nav-link text-danger" role="menuitem">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <main id="content">
+    <button id="sidebarToggle" class="d-md-none" aria-label="Toggle sidebar" title="Toggle Sidebar">
+      <i class="bi bi-list"></i>
+    </button>
+    <header>Dashboard Overview</header>
+    <div class="container-fluid px-0">
+      <div class="row g-3">
+        <div class="col-12 col-sm-6 col-md-3 card-col">
+          <div class="card shadow-sm">
+            <div class="card-body text-center">
+              <div class="stat-value">1,245</div>
+              <div class="stat-label">Total Sales / Exams</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3 card-col">
+          <div class="card shadow-sm">
+            <div class="card-body text-center">
+              <div class="stat-value">982</div>
+              <div class="stat-label">Total Orders / Students</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3 card-col">
+          <div class="card shadow-sm">
+            <div class="card-body text-center">
+              <div class="stat-value">76</div>
+              <div class="stat-label">Pending Tasks / Assignments</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3 card-col">
+          <div class="card shadow-sm">
+            <div class="card-body text-center">
+              <div class="stat-value">24</div>
+              <div class="stat-label">New Customers / Enrollments</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Sidebar toggle button for small devices
+    const sidebar = document.getElementById('sidebar');
+    const toggleButton = document.getElementById('sidebarToggle');
+
+    toggleButton.addEventListener('click', () => {
+      sidebar.classList.toggle('show');
+    });
+
+    // Close sidebar on small devices when clicking a nav link
+    document.querySelectorAll('#sidebar .nav-link').forEach((el) => {
+      el.addEventListener('click', () => {
+        if (window.innerWidth < 768) {
+          sidebar.classList.remove('show');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
+</content>
+</create_file>
