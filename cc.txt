@@ -1,0 +1,29 @@
+Sudo apt install net-tools
+
+sudo ip addr add 192.168.100.11/24 dev eth0
+sudo ip link set eth0 up
+
+scp pp.txt vagrant@192.168.1.1:/home/vagrant
+
+
+
+
+
+  app.yaml:-
+
+  application: adarshrupa
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: false
+
+handlers:
+- url: /.*
+  script: main.py
+
+main.py
+
+print 'Content-Type: text/plain'
+print ''
+print 'Hello, world!'
+  
